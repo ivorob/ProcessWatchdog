@@ -85,11 +85,13 @@ ProcessWatchdog::updateCommandLine()
 bool
 ProcessWatchdog::check()
 {
-    HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, this->processId);
-    if (processHandle != nullptr) {
-        DWORD exitCode = StillAlive;
-        if (GetExitCodeProcess(processHandle, &exitCode) && exitCode == StillAlive) {
-            return true;
+    if (processId != 0) {
+        HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, this->processId);
+        if (processHandle != nullptr) {
+            DWORD exitCode = StillAlive;
+            if (GetExitCodeProcess(processHandle, &exitCode) && exitCode == StillAlive) {
+                return true;
+            }
         }
     }
 
